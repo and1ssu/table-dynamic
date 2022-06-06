@@ -1,0 +1,12 @@
+node_modules
+public
+build
+dist
+generated
+
+*.svg
+*.png
+*.otf
+*.graphql
+*.gql
+pre-commit.js
