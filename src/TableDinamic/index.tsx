@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState, useRef } from 'react';
 
 import './styles.css';
 import { Box, Checkbox, FormControlLabel } from '@mui/material';
+import { Helmet } from 'react-helmet';
 import { Badge, Button, Col, Container, Row, Table } from 'reactstrap';
 
 import imgMenu from '../assets/img/menu.png';
@@ -36,9 +37,11 @@ function TableDinamic(): JSX.Element {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setDefaultCheck(event.target.checked);
+    setFiftyCheck(false);
   };
   const handleChange1 = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setFiftyCheck(event.target.checked);
+    setDefaultCheck(false);
   };
   const handleChange2 = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setUserCheck(event.target.checked);
@@ -52,27 +55,31 @@ function TableDinamic(): JSX.Element {
   const handleChange5 = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setAcessCheck(event.target.checked);
   };
+  const row = defaultCheck ? data.slice(0, 5) : data;
+
   return (
-    <Container>
-      <Row>
-        <Col md={8}>
-          <Table hover size="sm" bordered className="table">
-            <thead>
-              <tr>
-                {userCheck && <td className="color-font">USUÁRIOS</td>}
-                {emailCheck && <td className="color-font">EMAIL</td>}
-                {clientCheck && <td className="color-font">CLIENTE</td>}
-                {acessCheck && (
-                  <td className="color-font" align="center">
-                    PERFIL DE ACESSO
-                  </td>
-                )}
-              </tr>
-            </thead>
-            <tbody>
-              {data.map(user => (
-                <>
-                  {console.log(data.length)}{' '}
+    <>
+      <Helmet>
+        <title>Tabela</title>
+      </Helmet>
+      <Container>
+        <Row>
+          <Col md={8}>
+            <Table hover size="sm" bordered className="table">
+              <thead>
+                <tr>
+                  {userCheck && <td className="color-font">USUÁRIOS</td>}
+                  {emailCheck && <td className="color-font">EMAIL</td>}
+                  {clientCheck && <td className="color-font">CLIENTE</td>}
+                  {acessCheck && (
+                    <td className="color-font" align="center">
+                      PERFIL DE ACESSO
+                    </td>
+                  )}
+                </tr>
+              </thead>
+              <tbody>
+                {row.map(user => (
                   <tr key={user}>
                     {userCheck && <td className="color-font">{user.name} </td>}
                     {emailCheck && (
@@ -116,153 +123,152 @@ function TableDinamic(): JSX.Element {
                       </Button>
                     </td>
                   </tr>
-                </>
-              ))}
-            </tbody>
-          </Table>
-        </Col>
-        <Col md={4}>
-          <div className="menu-container">
-            <Button className="btn-menu" onClick={onCLick}>
-              <img
-                src={imgMenu}
-                alt="menu"
-                style={{ width: ' 20px', background: 'none' }}
-              />
-            </Button>
+                ))}
+              </tbody>
+            </Table>
+          </Col>
+          <Col md={4}>
+            <div className="menu-container">
+              <Button className="btn-menu" onClick={onCLick}>
+                <img
+                  src={imgMenu}
+                  alt="menu"
+                  style={{ width: ' 20px', background: 'none' }}
+                />
+              </Button>
 
-            <nav
-              className={`menu ${isActive ? 'active' : 'inactive'} `}
-              ref={drowpdownRef}
-            >
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  ml: 3,
-                  width: 210,
-                  height: 400,
-                  padding: '10px',
-                  boxShadow: '3px 3px 3px #ccc',
-                }}
+              <nav
+                className={`menu ${isActive ? 'active' : 'inactive'} `}
+                ref={drowpdownRef}
               >
-                <span className="title">Linhas por pagína</span>
-                <FormControlLabel
-                  className="color-font"
-                  control={
-                    <Checkbox
-                      value={defaultCheck}
-                      checked={defaultCheck}
-                      onChange={handleChange}
-                      inputProps={{ 'aria-label': 'controlled' }}
-                      sx={{
-                        color: '#0DCAF0',
-                        '&.Mui-checked': {
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    ml: 3,
+                    width: 210,
+                    height: 400,
+                    padding: '10px',
+                    boxShadow: '3px 3px 3px #ccc',
+                  }}
+                >
+                  <span className="title">Linhas por pagína</span>
+                  <FormControlLabel
+                    className="color-font"
+                    control={
+                      <Checkbox
+                        value={defaultCheck}
+                        checked={defaultCheck}
+                        onChange={handleChange}
+                        sx={{
                           color: '#0DCAF0',
-                        },
-                      }}
-                    />
-                  }
-                  label="Padrão"
-                />
-                <FormControlLabel
-                  className="color-font"
-                  control={
-                    <Checkbox
-                      value={fiftyCheck}
-                      checked={fiftyCheck}
-                      onChange={handleChange1}
-                      inputProps={{ 'aria-label': 'controlled' }}
-                      sx={{
-                        color: '#0DCAF0',
-                        '&.Mui-checked': {
+                          '&.Mui-checked': {
+                            color: '#0DCAF0',
+                          },
+                        }}
+                      />
+                    }
+                    label="Padrão"
+                  />
+                  <FormControlLabel
+                    className="color-font"
+                    control={
+                      <Checkbox
+                        value={fiftyCheck}
+                        checked={fiftyCheck}
+                        onChange={handleChange1}
+                        inputProps={{ 'aria-label': 'controlled' }}
+                        sx={{
                           color: '#0DCAF0',
-                        },
-                      }}
-                    />
-                  }
-                  label="50 linhas"
-                />
-                <hr />
-                <span className="title">Colunas</span>
-                <FormControlLabel
-                  className="color-font"
-                  control={
-                    <Checkbox
-                      value={userCheck}
-                      checked={userCheck}
-                      onChange={handleChange2}
-                      inputProps={{ 'aria-label': 'controlled' }}
-                      sx={{
-                        color: '#0DCAF0',
-                        '&.Mui-checked': {
+                          '&.Mui-checked': {
+                            color: '#0DCAF0',
+                          },
+                        }}
+                      />
+                    }
+                    label="10 linhas"
+                  />
+                  <hr />
+                  <span className="title">Colunas</span>
+                  <FormControlLabel
+                    className="color-font"
+                    control={
+                      <Checkbox
+                        value={userCheck}
+                        checked={userCheck}
+                        onChange={handleChange2}
+                        inputProps={{ 'aria-label': 'controlled' }}
+                        sx={{
                           color: '#0DCAF0',
-                        },
-                      }}
-                    />
-                  }
-                  label="Usuário"
-                />
-                <FormControlLabel
-                  className="color-font"
-                  control={
-                    <Checkbox
-                      value={emailCheck}
-                      checked={emailCheck}
-                      onChange={handleChange3}
-                      inputProps={{ 'aria-label': 'controlled' }}
-                      sx={{
-                        color: '#0DCAF0',
-                        '&.Mui-checked': {
+                          '&.Mui-checked': {
+                            color: '#0DCAF0',
+                          },
+                        }}
+                      />
+                    }
+                    label="Usuário"
+                  />
+                  <FormControlLabel
+                    className="color-font"
+                    control={
+                      <Checkbox
+                        value={emailCheck}
+                        checked={emailCheck}
+                        onChange={handleChange3}
+                        inputProps={{ 'aria-label': 'controlled' }}
+                        sx={{
                           color: '#0DCAF0',
-                        },
-                      }}
-                    />
-                  }
-                  label="E-mail"
-                />
-                <FormControlLabel
-                  className="color-font"
-                  control={
-                    <Checkbox
-                      value={clientCheck}
-                      checked={clientCheck}
-                      onChange={handleChange4}
-                      inputProps={{ 'aria-label': 'controlled' }}
-                      sx={{
-                        color: '#0DCAF0',
-                        '&.Mui-checked': {
+                          '&.Mui-checked': {
+                            color: '#0DCAF0',
+                          },
+                        }}
+                      />
+                    }
+                    label="E-mail"
+                  />
+                  <FormControlLabel
+                    className="color-font"
+                    control={
+                      <Checkbox
+                        value={clientCheck}
+                        checked={clientCheck}
+                        onChange={handleChange4}
+                        inputProps={{ 'aria-label': 'controlled' }}
+                        sx={{
                           color: '#0DCAF0',
-                        },
-                      }}
-                    />
-                  }
-                  label="Cliente"
-                />
-                <FormControlLabel
-                  className="color-font"
-                  control={
-                    <Checkbox
-                      value={acessCheck}
-                      checked={acessCheck}
-                      onChange={handleChange5}
-                      inputProps={{ 'aria-label': 'controlled' }}
-                      sx={{
-                        color: '#0DCAF0',
-                        '&.Mui-checked': {
+                          '&.Mui-checked': {
+                            color: '#0DCAF0',
+                          },
+                        }}
+                      />
+                    }
+                    label="Cliente"
+                  />
+                  <FormControlLabel
+                    className="color-font"
+                    control={
+                      <Checkbox
+                        value={acessCheck}
+                        checked={acessCheck}
+                        onChange={handleChange5}
+                        inputProps={{ 'aria-label': 'controlled' }}
+                        sx={{
                           color: '#0DCAF0',
-                        },
-                      }}
-                    />
-                  }
-                  label="Perfil de acesso"
-                />
-              </Box>
-            </nav>
-          </div>{' '}
-        </Col>
-      </Row>
-    </Container>
+                          '&.Mui-checked': {
+                            color: '#0DCAF0',
+                          },
+                        }}
+                      />
+                    }
+                    label="Perfil de acesso"
+                  />
+                </Box>
+              </nav>
+            </div>{' '}
+          </Col>
+        </Row>
+      </Container>
+    </>
   );
 }
 export default TableDinamic;

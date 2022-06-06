@@ -8,6 +8,7 @@ body {
 table {
     box-shadow: 3px 3px 3px #ccc;
     
+    
 }
 table.table-hover tbody tr:hover {
     background-color:#0dcaf04d;
